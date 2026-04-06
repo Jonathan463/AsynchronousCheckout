@@ -12,6 +12,6 @@ import technologyforall.com.asynchronouscheckout.model.Product;
 @NoArgsConstructor
 public class OrderRequest {
 
-private Product product;
+private Long productId;
 private int numberOfItem;
 }
