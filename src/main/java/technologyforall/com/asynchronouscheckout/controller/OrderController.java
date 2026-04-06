@@ -19,7 +19,7 @@ import technologyforall.com.asynchronouscheckout.service.OrderService;
 @RequiredArgsConstructor
 public class OrderController {
 
-    OrderService orderService;
+    final OrderService orderService;
     @PostMapping
     public ResponseEntity<OrderResponse> placeOrder(@Valid @RequestBody OrderRequest orderRequest){
         OrderResponse orderResponse = orderService.orderProduct(orderRequest);

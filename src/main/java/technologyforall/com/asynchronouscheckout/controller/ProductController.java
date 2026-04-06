@@ -19,7 +19,7 @@ import technologyforall.com.asynchronouscheckout.service.ProductService;
 @RequiredArgsConstructor
 public class ProductController {
 
-    ProductService productService;
+    final ProductService productService;
 
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductRequest productRequest){

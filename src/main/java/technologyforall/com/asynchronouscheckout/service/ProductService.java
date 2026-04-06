@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import technologyforall.com.asynchronouscheckout.model.dto.ProductRequest;
 import technologyforall.com.asynchronouscheckout.model.dto.ProductResponse;
 
-@Service
+
 public interface ProductService {
 
     ProductResponse createProduct(ProductRequest productRequest);
