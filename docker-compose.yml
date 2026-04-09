@@ -5,11 +5,11 @@ services:
     image: postgres:17.2-alpine
     container_name: asynchronous-checkout-db
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:asynchronous-checkout}
-      POSTGRES_USER: ${POSTGRES_USER:asynchronous-checkout}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:asynchronous-checkout}
+      POSTGRES_DB: ${POSTGRES_DB:-asynchronous-checkout}
+      POSTGRES_USER: ${POSTGRES_USER:-asynchronous-checkout}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-asynchronous-checkout}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -30,11 +30,11 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      DB_HOST: ${DB_HOST:postgres}
-      DB_PORT: ${DB_PORT:5432}
-      DB_NAME: ${DB_NAME:asynchronous-checkout}
-      DB_USERNAME: ${DB_USERNAME:asynchronous-checkout}
-      DB_PASSWORD: ${DB_PASSWORD:asynchronous-checkout}
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-asynchronous-checkout}
+      DB_USERNAME: ${DB_USERNAME:-asynchronous-checkout}
+      DB_PASSWORD: ${DB_PASSWORD:-asynchronous-checkout}
     ports:
       - "8080:8080"
     networks:

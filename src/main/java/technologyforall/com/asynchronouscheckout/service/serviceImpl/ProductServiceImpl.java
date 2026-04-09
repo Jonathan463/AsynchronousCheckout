@@ -32,4 +32,9 @@ public class ProductServiceImpl implements ProductService {
         productResponse.setPrice(savedProduct.getProductPrice());
         return productResponse;
     }
+
+    @Override
+    public Product checkIfProductExist(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
 }

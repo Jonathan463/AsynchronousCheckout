@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import technologyforall.com.asynchronouscheckout.model.Product;
 import technologyforall.com.asynchronouscheckout.model.dto.ProductRequest;
 import technologyforall.com.asynchronouscheckout.model.dto.ProductResponse;
 import technologyforall.com.asynchronouscheckout.service.ProductService;
@@ -26,4 +24,10 @@ public class ProductController {
         ProductResponse productResponse = productService.createProduct(productRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(productResponse);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable Long id){
+        Product product = productService.checkIfProductExist(id);
+        return ResponseEntity.status(HttpStatus.FOUND).body(product);
+    }
+
 }
