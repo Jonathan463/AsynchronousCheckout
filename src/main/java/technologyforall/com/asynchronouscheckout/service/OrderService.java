@@ -8,5 +8,5 @@ import technologyforall.com.asynchronouscheckout.model.dto.ProductRequest;
 
 public interface OrderService {
 
-    OrderResponse orderProduct(OrderRequest orderRequest);
+    OrderResponse orderProduct(OrderRequest orderRequest) throws InterruptedException;
 }

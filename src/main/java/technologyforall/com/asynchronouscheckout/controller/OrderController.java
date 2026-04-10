@@ -21,7 +21,7 @@ public class OrderController {
 
     final OrderService orderService;
     @PostMapping
-    public ResponseEntity<OrderResponse> placeOrder(@Valid @RequestBody OrderRequest orderRequest){
+    public ResponseEntity<OrderResponse> placeOrder(@Valid @RequestBody OrderRequest orderRequest) throws InterruptedException{
         OrderResponse orderResponse = orderService.orderProduct(orderRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
     }

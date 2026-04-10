@@ -2,6 +2,7 @@ package technologyforall.com.asynchronouscheckout.service.serviceImpl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import technologyforall.com.asynchronouscheckout.model.Order;
 import technologyforall.com.asynchronouscheckout.model.Product;
@@ -15,6 +16,7 @@ import technologyforall.com.asynchronouscheckout.service.OrderService;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -24,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
 
    @Transactional
     @Override
-    public OrderResponse orderProduct(OrderRequest orderRequest) {
+    public OrderResponse orderProduct(OrderRequest orderRequest) throws InterruptedException {
         Optional<Product> optionalProduct = productRepository.findById(orderRequest.getProductId());
 
 
@@ -35,8 +37,16 @@ public class OrderServiceImpl implements OrderService {
 
             if(product.getProductQuantity() > 0) {
 
-                int newQuantity = product.getProductQuantity() - orderRequest.getNumberOfItem();
+                int currentQuantity = product.getProductQuantity();
+
+                log.info("THREAD {} - READ quantity {}", Thread.currentThread().getName(), currentQuantity);
+
+                Thread.sleep(500);
+                int newQuantity = currentQuantity - orderRequest.getNumberOfItem();
+
                 product.setProductQuantity(newQuantity);
+
+                log.info("THREAD {} - THREAD quantity {}", Thread.currentThread().getName(), newQuantity);
 
                 productRepository.save(product);
 
