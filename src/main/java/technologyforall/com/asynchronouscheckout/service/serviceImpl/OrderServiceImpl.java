@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import technologyforall.com.asynchronouscheckout.exception.ResourceNotFoundException;
 import technologyforall.com.asynchronouscheckout.model.Order;
 import technologyforall.com.asynchronouscheckout.model.Product;
 import technologyforall.com.asynchronouscheckout.model.dto.OrderRequest;
@@ -62,6 +63,6 @@ public class OrderServiceImpl implements OrderService {
                 return orderResponse;
             }
         }
-        throw new NoSuchElementException("Such Element Does not exist");
+        throw new ResourceNotFoundException("Order","id",orderRequest.getProductId());
     }
 }
