@@ -1,6 +1,6 @@
 package technologyforall.com.asynchronouscheckout.service.serviceImpl;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,12 +9,10 @@ import technologyforall.com.asynchronouscheckout.model.Order;
 import technologyforall.com.asynchronouscheckout.model.Product;
 import technologyforall.com.asynchronouscheckout.model.dto.OrderRequest;
 import technologyforall.com.asynchronouscheckout.model.dto.OrderResponse;
-import technologyforall.com.asynchronouscheckout.model.dto.ProductRequest;
 import technologyforall.com.asynchronouscheckout.repository.OrderRepository;
 import technologyforall.com.asynchronouscheckout.repository.ProductRepository;
 import technologyforall.com.asynchronouscheckout.service.OrderService;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
