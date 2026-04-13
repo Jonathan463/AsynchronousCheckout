@@ -28,7 +28,8 @@ public class OrderServiceImpl implements OrderService {
    @Transactional
     @Override
     public OrderResponse orderProduct(OrderRequest orderRequest) throws InterruptedException {
-        Optional<Product> optionalProduct = productRepository.findById(orderRequest.getProductId());
+        //Optional<Product> optionalProduct = productRepository.findById(orderRequest.getProductId());
+          Optional<Product> optionalProduct = productRepository.findByIdForUpdate(orderRequest.getProductId());
 
 
         if(optionalProduct.isPresent()){
