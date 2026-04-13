@@ -9,13 +9,11 @@ import technologyforall.com.asynchronouscheckout.model.Order;
 import technologyforall.com.asynchronouscheckout.model.Product;
 import technologyforall.com.asynchronouscheckout.model.dto.OrderRequest;
 import technologyforall.com.asynchronouscheckout.model.dto.OrderResponse;
-import technologyforall.com.asynchronouscheckout.model.dto.ProductRequest;
 import technologyforall.com.asynchronouscheckout.repository.OrderRepository;
 import technologyforall.com.asynchronouscheckout.repository.ProductRepository;
 import technologyforall.com.asynchronouscheckout.service.OrderService;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
+
 
 @Slf4j
 @Service
@@ -28,32 +26,15 @@ public class OrderServiceImpl implements OrderService {
    @Transactional
     @Override
     public OrderResponse orderProduct(OrderRequest orderRequest) throws InterruptedException {
-        Optional<Product> optionalProduct = productRepository.findById(orderRequest.getProductId());
+        int zeroOrOne = productRepository.atomicUpdate(orderRequest.getProductId());
 
 
-        if(optionalProduct.isPresent()){
+        if(zeroOrOne == 1){
 
-
-            Product product = optionalProduct.get();
-
-            if(product.getProductQuantity() > 0) {
-
-                int currentQuantity = product.getProductQuantity();
-
-                log.info("THREAD {} - READ quantity {}", Thread.currentThread().getName(), currentQuantity);
-
-                Thread.sleep(500);
-                int newQuantity = currentQuantity - orderRequest.getNumberOfItem();
-
-                product.setProductQuantity(newQuantity);
-
-                log.info("THREAD {} - THREAD quantity {}", Thread.currentThread().getName(), newQuantity);
-
-                productRepository.save(product);
-
+                Product fetchedProduct = productRepository.findProductById(orderRequest.getProductId());
 
                 Order order = new Order();
-                order.setProduct(product);
+                order.setProduct(fetchedProduct);
                 order.setNumberOfItem(orderRequest.getNumberOfItem());
 
                 Order savedOrder = orderRepository.save(order);
@@ -61,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
                 orderResponse.setProduct(savedOrder.getProduct());
                 orderResponse.setNumberOfItem(savedOrder.getNumberOfItem());
                 return orderResponse;
-            }
+
         }
         throw new ResourceNotFoundException("Order","id",orderRequest.getProductId());
     }
