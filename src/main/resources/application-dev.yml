@@ -23,3 +23,14 @@ spring:
           batch_size: 25
         order_inserts: true
         order_updates: true
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
+    consumer:
+      group-id: order-consumer-group
+
+# Custom application config
+app:
+  kafka:
+    topic:
+      order: order-topic

@@ -9,12 +9,10 @@ import technologyforall.com.asynchronouscheckout.model.Order;
 import technologyforall.com.asynchronouscheckout.model.Product;
 import technologyforall.com.asynchronouscheckout.model.dto.OrderRequest;
 import technologyforall.com.asynchronouscheckout.model.dto.OrderResponse;
-import technologyforall.com.asynchronouscheckout.model.dto.ProductRequest;
 import technologyforall.com.asynchronouscheckout.repository.OrderRepository;
 import technologyforall.com.asynchronouscheckout.repository.ProductRepository;
 import technologyforall.com.asynchronouscheckout.service.OrderService;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -36,13 +34,12 @@ public class OrderServiceImpl implements OrderService {
 
             Product product = optionalProduct.get();
 
-            if(product.getProductQuantity() > 0) {
+            if(product.getProductQuantity() >= orderRequest.getNumberOfItem()) {
 
                 int currentQuantity = product.getProductQuantity();
 
                 log.info("THREAD {} - READ quantity {}", Thread.currentThread().getName(), currentQuantity);
 
-                Thread.sleep(500);
                 int newQuantity = currentQuantity - orderRequest.getNumberOfItem();
 
                 product.setProductQuantity(newQuantity);
@@ -64,5 +61,19 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         throw new ResourceNotFoundException("Order","id",orderRequest.getProductId());
+    }
+
+    @Override
+    public OrderResponse findOrderById(Long id) {
+       Order optionalOrder = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
+
+
+
+           OrderResponse orderResponse = new OrderResponse();
+
+           orderResponse.setNumberOfItem(optionalOrder.getNumberOfItem());
+           orderResponse.setProduct(optionalOrder.getProduct());
+
+           return orderResponse;
     }
 }
